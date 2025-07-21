@@ -229,21 +229,23 @@ Once the application is running, you can test the RESTful APIs using Postman.
   { "name": "State Law College", "address": "202 Justice Lane, Lawton" }
 ]
 
-##Departments (/departments)
 
-POST /departments/batch: Create multiple departments.
-GET /departments: Get all departments.
-GET /departments/{departmentId}: Get department by ID.
-GET /departments/college/{collegeId}: Get departments by college ID.
-GET /departments/name/{name}: Get department by name.
-GET /departments/code/{code}: Get department by code.
-PUT /departments/{departmentId}: Update department by ID.
-PATCH /departments/{departmentId}: Partially update department by ID.
-DELETE /departments/{departmentId}: Delete department by ID.
+### Departments (`/departments`)
 
-Sample Department Data for POST /departments/batch (Replace {collegeId} with actual IDs)
-JSON
+* `POST /departments/batch`: Create multiple departments.
+    * **Note:** When creating, link to an existing college using `"college": { "collegeId": {existingCollegeId} }`.
+* `GET /departments`: Get all departments.
+* `GET /departments/{departmentId}`: Get department by ID.
+* `GET /departments/college/{collegeId}`: Get departments by college ID.
+* `GET /departments/name/{name}`: Get department by name.
+* `GET /departments/code/{code}`: Get department by code.
+* `PUT /departments/{departmentId}`: Update department by ID.
+* `PATCH /departments/{departmentId}`: Partially update department by ID.
+* `DELETE /departments/{departmentId}`: Delete department by ID.
 
+#### Sample Department Data for `POST /departments/batch` (Replace `{collegeId}` with actual IDs)
+
+```json
 [
   { "name": "Software Engineering", "code": "SE", "college": { "collegeId": 1 } },
   { "name": "Data Science", "code": "DS", "college": { "collegeId": 1 } },
@@ -253,21 +255,21 @@ JSON
 ]
 
 
-##Teachers (/teachers)
+### Teachers (`/teachers`)
 
-POST /teachers/batch: Create multiple teachers.
-GET /teachers: Get all teachers.
-GET /teachers/{teacherId}: Get teacher by ID.
-GET /teachers/department/{departmentId}: Get teachers by department ID.
-GET /teachers/name/{name}: Get teacher by name.
-GET /teachers/degree/{degree}: Get teachers by degree.
-PUT /teachers/{teacherId}: Update teacher by ID.
-PATCH /teachers/{teacherId}: Partially update teacher by ID.
-DELETE /teachers/{teacherId}: Delete teacher by ID.
+* `POST /teachers/batch`: Create multiple teachers.
+* `GET /teachers`: Get all teachers.
+* `GET /teachers/{teacherId}`: Get teacher by ID.
+* `GET /teachers/department/{departmentId}: Get teachers by department ID.
+* `GET /teachers/name/{name}`: Get teacher by name.
+* `GET /teachers/degree/{degree}`: Get teachers by degree.
+* `PUT /teachers/{teacherId}`: Update teacher by ID.
+* `PATCH /teachers/{teacherId}`: Partially update teacher by ID.
+* `DELETE /teachers/{teacherId}`: Delete teacher by ID.
 
-Sample Teacher Data for POST /teachers/batch (Replace {departmentId} with actual IDs)
-JSON
+#### Sample Teacher Data for `POST /teachers/batch` (Replace `{departmentId}` with actual IDs)
 
+```json
 [
   { "name": "Dr. Alice Smith", "email": "alice.smith@example.com", "degree": "Ph.D. Computer Science", "department": { "departmentId": 201 } },
   { "name": "Prof. Bob Johnson", "email": "bob.johnson@example.com", "degree": "M.Sc. Data Science", "department": { "departmentId": 202 } },
@@ -275,21 +277,22 @@ JSON
 ]
 
 
-Students (/students)
+### Students (`/students`)
 
-POST /students/batch: Create multiple students.
-GET /students: Get all students.
-GET /students/{studentId}: Get student by ID.
-GET /students/department/{departmentId}: Get students by department ID.
-GET /students/name/{name}: Get student by name.
-GET /students/email/{email}: Get student by email.
-PUT /students/{studentId}: Update student by ID.
-PATCH /students/{studentId}: Partially update student by ID.
-DELETE /students/{studentId}: Delete student by ID.
+* `POST /students/batch`: Create multiple students.
+    * **Note:** When creating, link to an existing department using `"department": { "departmentId": {existingDepartmentId} }`.
+* `GET /students`: Get all students.
+* `GET /students/{studentId}`: Get student by ID.
+* `GET /students/department/{departmentId}: Get students by department ID.
+* `GET /students/name/{name}`: Get student by name.
+* `GET /students/email/{email}`: Get student by email.
+* `PUT /students/{studentId}`: Update student by ID.
+* `PATCH /students/{studentId}`: Partially update student by ID.
+* `DELETE /students/{studentId}`: Delete student by ID.
 
-Sample Student Data for POST /students/batch (Replace {departmentId} with actual IDs)
-JSON
+#### Sample Student Data for `POST /students/batch` (Replace `{departmentId}` with actual IDs)
 
+```json
 [
   { "name": "John Doe", "email": "john.doe@example.com", "major": "Software Engineering", "department": { "departmentId": 201 } },
   { "name": "Jane Roe", "email": "jane.roe@example.com", "major": "Data Science", "department": { "departmentId": 202 } },
