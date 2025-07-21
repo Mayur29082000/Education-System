@@ -49,21 +49,6 @@ The application is designed following best practices, including layered architec
 * **Unit Testing:** Example unit tests using JUnit 5 and Mockito for isolated testing of service layer logic, demonstrating mocking dependencies and assertion.
 * **Lombok Integration:** Reduces boilerplate code in entities (getters, setters, constructors, etc.) for cleaner and more concise code.
 
-## Key Annotations Used
-
-* `@SpringBootApplication`: Main Spring Boot config, auto-config, and component scan.
-* `@RestController`, `@RequestMapping`: Define REST controllers and map HTTP requests.
-* `@PostMapping`, `@GetMapping`, `@PutMapping`, `@PatchMapping`, `@DeleteMapping`: Specific HTTP method mappings.
-* `@RequestBody`, `@PathVariable`: Bind request body to object and extract path variables.
-* `@Valid`: Triggers validation on request body.
-* `@Entity`, `@Table`, `@Id`, `@GeneratedValue`, `@Column`: JPA annotations for database mapping.
-* `@ManyToOne`, `@OneToMany`, `@JoinColumn`: Define entity relationships.
-* `@NotBlank`, `@Size`, `@Email`, `@NotNull`: Bean Validation constraints.
-* `@Repository`, `@Service`, `@Component`: Spring stereotypes for persistence, business logic, and general components.
-* `@Transactional`: Ensures methods run within a database transaction.
-* `@Profile`: Activates components based on active Spring profile.
-* `@Mock`, `@InjectMocks`, `@ExtendWith`: Mockito annotations for testing.
-* `@Data`, `@NoArgsConstructor`, `@AllArgsConstructor`, `@Builder`: Lombok annotations for boilerplate reduction.
 
 ## Class Explanations
 
@@ -158,49 +143,6 @@ Your project implements a robust error handling mechanism using Spring's `@RestC
     * **GlobalExceptionHandler:** Catches these exceptions and formats the response.
     * This approach separates error handling logic from core business logic in controllers and services, making the code cleaner and more maintainable.
 
-## Unit Test Cases Explanation (`CollegeServiceTest.java`)
-
-The `CollegeServiceTest.java` file provides an example of unit testing the `CollegeService` using JUnit 5 and Mockito.
-
-* **Unit Testing Philosophy:** Unit tests focus on testing individual components (units) in isolation, typically methods within a single class. Dependencies of the class under test are "mocked" to control their behavior and ensure that only the logic of the tested unit is evaluated, not the behavior of its dependencies.
-* **Mockito:** A popular mocking framework for Java.
-    * `@Mock private CollegeRepository collegeRepository;`: Creates a dummy (mock) version of `CollegeRepository`. Instead of actually hitting the database, this mock will simulate database interactions based on predefined rules.
-    * `@InjectMocks private CollegeServiceImpl collegeService;`: Creates an instance of `CollegeServiceImpl` and automatically injects the `collegeRepository` mock into it.
-    * `@BeforeEach void setUp()`:
-        * **Purpose:** This method runs before every single test method. It's used to initialize common objects (like `college1`, `college2`) that are needed by multiple tests, ensuring a fresh state for each test.
-* **Test Methods (e.g., `testSaveCollege_Success()`, `testGetCollegeById_NotFound()`)**
-    * Each method is annotated with `@Test` and given a descriptive name using `@DisplayName`.
-    * `when(...).thenReturn(...)`: This is Mockito's way of defining stubbing behavior. It tells the mock (e.g., `collegeRepository`) what to return when a specific method is called with certain arguments.
-        * **Example:** `when(collegeRepository.save(any(College.class))).thenReturn(college1);` means "When `save()` is called on the `collegeRepository` mock with any `College` object, return `college1`."
-    * `doNothing().when(...)`: Used for mocking void methods.
-    * **Assertions (`assertThat`, `assertThrows`):**
-        * `assertThat(actual).isNotNull();`: From AssertJ, provides fluent assertions to check conditions on the actual result.
-        * `assertThrows(Exception.class, () -> service.method());`: From JUnit, checks if a specific exception is thrown when a piece of code is executed.
-    * **Verification (`verify(...)`):**
-        * `verify(collegeRepository, times(1)).save(any(College.class));`: Verifies that a specific method on a mock (`collegeRepository.save()`) was called a certain number of times (exactly once in this case).
-        * `verify(collegeRepository, never()).save(any(College.class));`: Verifies that a method was never called.
-    * **Example Test Breakdown (`testSaveCollege_Success()`):**
-        * **Arrange:** Define the expected behavior of the mocked `collegeRepository.save()` method.
-        * **Act:** Call the actual `collegeService.saveCollege()` method, which internally uses the mocked repository.
-        * **Assert:** Use `assertThat` to verify that the `savedCollege` object returned by the service method has the expected properties.
-        * **Verify:** Use `verify` to ensure that `collegeRepository.save()` was indeed called exactly once by the service method.
-
-## Method Explanations (New/Notable Features)
-
-Beyond basic CRUD, a few methods are worth highlighting:
-
-* **Batch Saving (`saveAllColleges`, `saveAllDepartments`, `saveAllStudents`, `saveAllTeachers`):**
-    * **Location:** Controllers and Service implementations.
-    * **Purpose:** Allows clients to send a list of entities in a single request (e.g., `POST /colleges/batch`) to be saved. This is more efficient than making multiple individual POST requests for each entity, reducing network overhead.
-    * **Implementation Note:** For Department, Student, and Teacher batch saves, the service layer iterates through each entity in the list to ensure its associated parent (College for Department, Department for Student/Teacher) exists before calling `repository.saveAll()`. The `@Transactional` annotation ensures that either all entities are saved, or none are (if an error occurs for any one of them).
-* **Partial Updates (`patchCollege`, `patchDepartment`, `patchStudent`, `patchTeacher`):**
-    * **Location:** Controllers and Service implementations.
-    * **Purpose:** Allows updating only specific fields of an existing resource without sending the entire resource object. This is typically done via HTTP PATCH.
-    * **Implementation:** The service methods fetch the existing entity. Then, for each field that could be updated, they check if the corresponding field in the incoming patch object is non-null and not empty. If it is, the existing entity's field is updated. This avoids overwriting existing data with null if a field is omitted from the patch request.
-* **Environment Profiling (`AppInfoController`, `EnvironmentService` and its implementations):**
-    * **Location:** `profile` package, `AppInfoController`.
-    * **Purpose:** Demonstrates how to create beans whose availability depends on the active Spring profile. This allows your application to behave differently or use different configurations in development, testing, or production environments.
-    * **How to use:** You can activate a profile by setting `spring.profiles.active=dev` (or `prod`) in `application.properties`, or by passing it as a JVM argument (`-Dspring.profiles.active=prod`) when running the JAR.
 
 ## Getting Started
 =
