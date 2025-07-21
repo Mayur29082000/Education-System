@@ -11,9 +11,9 @@ The application is designed following best practices, including layered architec
 ## 🎥 Project Demonstration 
 
 Watch a detailed walkthrough of the Education System:
+
 [Watch Project Demo on Google Drive](https://drive.google.com/file/d/1S2jpNWkpZwwonJ9CTwS0x7gStkzGcZaX/view?usp=drive_link)
-Watch Project Demo on Google Drive
-https://drive.google.com/file/d/1S2jpNWkpZwwonJ9CTwS0x7gStkzGcZaX/view?usp=drive_link
+
 
 ## Core Directories and Their Purpose
 
