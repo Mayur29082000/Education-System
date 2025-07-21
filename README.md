@@ -275,7 +275,6 @@ JSON
 ]
 
 
-
 Students (/students)
 
 POST /students/batch: Create multiple students.
